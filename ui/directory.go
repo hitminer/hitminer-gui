@@ -2,6 +2,7 @@ package ui
 
 import (
 	"context"
+	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
@@ -118,8 +119,15 @@ func DirectoryContainer(prefix string, w fyne.Window) fyne.CanvasObject {
 		cancel()
 		w.SetContent(LoginContainer(w))
 	})
+	updateButton := widget.NewToolbarAction(theme.HelpIcon(), func() {
+		dialog.ShowCustomConfirm("信息", "确认", "更新", widget.NewLabel(fmt.Sprintf("当前版本 %s", vars.Version)), func(success bool) {
+			if !success {
+				UpgradeWindows()
+			}
+		}, w)
+	})
 
-	toolbar := widget.NewToolbar(uploadFileButton, uploadFolderButton, createFolderButton, refreshButton, returnButton, logoutButton)
+	toolbar := widget.NewToolbar(uploadFileButton, uploadFolderButton, createFolderButton, refreshButton, returnButton, logoutButton, updateButton)
 	up := container.NewHBox(selectEntry, toolbar)
 
 	vbox := container.NewVBox()
