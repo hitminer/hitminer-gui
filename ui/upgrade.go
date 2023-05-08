@@ -78,13 +78,17 @@ func upgrade(ctx context.Context, bars multibar.MultiBar) error {
 		_ = resp.Body.Close()
 	}()
 
-	downloadFile, err := os.CreateTemp("", downloadName)
+	tempDir, err := os.MkdirTemp("", "hitminer")
 	if err != nil {
 		return err
 	}
 	defer func() {
-		_ = os.Remove(downloadFile.Name())
+		_ = os.RemoveAll(tempDir)
 	}()
+	downloadFile, err := os.CreateTemp(tempDir, downloadName)
+	if err != nil {
+		return err
+	}
 
 	b := bars.NewBarReader(resp.Body, resp.ContentLength, "更新下载中")
 	_, err = io.Copy(downloadFile, b)
@@ -117,7 +121,11 @@ func upgrade(ctx context.Context, bars multibar.MultiBar) error {
 				return err
 			}
 
-			dstFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+			err = os.MkdirAll(filepath.Dir(filepath.Join(tempDir, f.Name)), 0755)
+			if err != nil {
+				return err
+			}
+			tempFile, err := os.OpenFile(filepath.Join(tempDir, f.Name), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 			if err != nil {
 				return err
 			}
@@ -127,16 +135,32 @@ func upgrade(ctx context.Context, bars multibar.MultiBar) error {
 				return err
 			}
 
-			_, err = io.Copy(dstFile, fileInArchive)
+			_, err = io.Copy(tempFile, fileInArchive)
 			if err != nil {
+				_ = tempFile
+				_ = fileInArchive.Close()
 				return err
 			}
 
-			err = dstFile.Close()
+			err = tempFile.Close()
 			if err != nil {
 				return err
 			}
 			err = fileInArchive.Close()
+			if err != nil {
+				return err
+			}
+
+			err = os.MkdirAll(filepath.Dir(filepath.Join(tempDir, filepath.Base(filePath)+".old")), 0755)
+			if err != nil {
+				return err
+			}
+			err = os.Rename(filePath, filepath.Join(tempDir, filepath.Base(filePath)+".old"))
+			if err != nil {
+				return err
+			}
+
+			err = os.Rename(tempFile.Name(), filePath)
 			if err != nil {
 				return err
 			}
@@ -146,8 +170,16 @@ func upgrade(ctx context.Context, bars multibar.MultiBar) error {
 		if err != nil {
 			return err
 		}
+		defer func() {
+			_ = tarFile.Close()
+		}()
 
-		tarReader := tar.NewReader(lzw.NewReader(tarFile, lzw.LSB, 8))
+		lzwReader := lzw.NewReader(tarFile, lzw.LSB, 8)
+		defer func() {
+			_ = lzwReader.Close()
+		}()
+
+		tarReader := tar.NewReader(lzwReader)
 		for {
 			f, err := tarReader.Next()
 			if err == io.EOF {
@@ -171,17 +203,36 @@ func upgrade(ctx context.Context, bars multibar.MultiBar) error {
 				return err
 			}
 
-			dstFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.FileInfo().Mode())
+			err = os.MkdirAll(filepath.Dir(filepath.Join(tempDir, f.Name)), 0755)
+			if err != nil {
+				return err
+			}
+			tempFile, err := os.OpenFile(filepath.Join(tempDir, f.Name), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 			if err != nil {
 				return err
 			}
 
-			_, err = io.Copy(dstFile, tarReader)
+			_, err = io.Copy(tempFile, tarReader)
+			if err != nil {
+				_ = tempFile.Close()
+				return err
+			}
+
+			err = tempFile.Close()
 			if err != nil {
 				return err
 			}
 
-			err = dstFile.Close()
+			err = os.MkdirAll(filepath.Dir(filepath.Join(tempDir, filepath.Base(filePath)+".old")), 0755)
+			if err != nil {
+				return err
+			}
+			err = os.Rename(filePath, filepath.Join(tempDir, filepath.Base(filePath)+".old"))
+			if err != nil {
+				return err
+			}
+
+			err = os.Rename(tempFile.Name(), filePath)
 			if err != nil {
 				return err
 			}
