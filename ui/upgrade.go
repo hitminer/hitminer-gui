@@ -125,7 +125,7 @@ func upgrade(ctx context.Context, bars multibar.MultiBar) error {
 			if err != nil {
 				return err
 			}
-			tempFile, err := os.OpenFile(filepath.Join(tempDir, f.Name), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+			tempFile, err := os.OpenFile(filepath.Join(tempDir, f.Name), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0755)
 			if err != nil {
 				return err
 			}
@@ -207,7 +207,7 @@ func upgrade(ctx context.Context, bars multibar.MultiBar) error {
 			if err != nil {
 				return err
 			}
-			tempFile, err := os.OpenFile(filepath.Join(tempDir, f.Name), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+			tempFile, err := os.OpenFile(filepath.Join(tempDir, f.Name), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0755)
 			if err != nil {
 				return err
 			}

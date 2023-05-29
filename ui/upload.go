@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func UploadWindows(filePath, objectName string) {
+func UploadWindows(filePath, objectName string, ero bool) {
 	if objectName == "." {
 		objectName = ""
 	}
@@ -32,7 +32,7 @@ func UploadWindows(filePath, objectName string) {
 	vbox := container.NewVBox()
 	svr := s3gateway.NewS3Server(ctx, vars.Host, vars.Token, bar.NewProgressBar(w, vbox))
 	go func() {
-		err := svr.PutObjects(ctx, filePath, objectName)
+		err := svr.PutObjects(ctx, filePath, objectName, ero)
 		if err != nil {
 			dialog.ShowError(err, w)
 			return

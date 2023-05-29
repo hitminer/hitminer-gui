@@ -1,1 +1,1 @@
-## hitminer-gui
+# hitminer-gui
