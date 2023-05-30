@@ -223,6 +223,12 @@ github.com/hitminer/hitminer-file-manager v1.4.0 h1:AUEfFn7ObBLhGi7Fd24LaegsCk95
 github.com/hitminer/hitminer-file-manager v1.4.0/go.mod h1:8OWUvOFYxpLXCf5k12OnHGDYIpiu8o22yeLB7+lD0y8=
 github.com/hitminer/hitminer-file-manager v1.4.1 h1:bPtmuxV6O6kNta/Ke/opD1b4A4fpesxVzNqgoig1NxU=
 github.com/hitminer/hitminer-file-manager v1.4.1/go.mod h1:8OWUvOFYxpLXCf5k12OnHGDYIpiu8o22yeLB7+lD0y8=
+github.com/hitminer/hitminer-file-manager v1.4.2 h1:dKo/x4ZWQ0eXZF3hKsh6J9vi8Y2Avri7n+S7ooKs6zI=
+github.com/hitminer/hitminer-file-manager v1.4.2/go.mod h1:8OWUvOFYxpLXCf5k12OnHGDYIpiu8o22yeLB7+lD0y8=
+github.com/hitminer/hitminer-file-manager v1.4.4 h1:dPEVW173lPT2ZNWFG/RfwtC9cabTjYQYH4Umfl20GV0=
+github.com/hitminer/hitminer-file-manager v1.4.4/go.mod h1:8OWUvOFYxpLXCf5k12OnHGDYIpiu8o22yeLB7+lD0y8=
+github.com/hitminer/hitminer-file-manager v1.4.5 h1:mQ0fVVHxPyutAUSInlt3cCXRSDvHYtF515PEZjBjNAA=
+github.com/hitminer/hitminer-file-manager v1.4.5/go.mod h1:8OWUvOFYxpLXCf5k12OnHGDYIpiu8o22yeLB7+lD0y8=
 github.com/ianlancetaylor/demangle v0.0.0-20181102032728-5e5cf60278f6/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=
 github.com/ianlancetaylor/demangle v0.0.0-20200824232613-28f6c0f3b639/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=
 github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=

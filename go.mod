@@ -5,7 +5,7 @@ go 1.20
 require (
 	fyne.io/fyne/v2 v2.3.4
 	github.com/dustin/go-humanize v1.0.1
-	github.com/hitminer/hitminer-file-manager v1.4.1
+	github.com/hitminer/hitminer-file-manager v1.4.5
 	github.com/spf13/viper v1.15.0
 )
 
