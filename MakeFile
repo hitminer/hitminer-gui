@@ -3,10 +3,10 @@
 all:
 	go install github.com/fyne-io/fyne-cross@latest
 	go install fyne.io/fyne/v2/cmd/fyne@latest
-	fyne-cross windows -arch=amd64 -icon=./resoure/static/image/favicon.ico -app-id=hitminer.com -app-version=1.2.1 -output=hitminer
-	fyne-cross linux   -arch=amd64 -icon=./resoure/static/image/favicon.ico -app-id=hitminer.com -app-version=1.2.1 -output=hitminer
-	fyne-cross darwin  -arch=arm64 -icon=./resoure/static/image/favicon.ico -app-id=hitminer.com -app-version=1.2.1 -output=hitminer
-	fyne-cross darwin  -arch=amd64 -icon=./resoure/static/image/favicon.ico -app-id=hitminer.com -app-version=1.2.1 -output=hitminer
+	fyne-cross windows -arch=amd64 -icon=./resoure/static/image/favicon.ico -app-id=hitminer.com -app-version=1.2.2 -output=hitminer
+	fyne-cross linux   -arch=amd64 -icon=./resoure/static/image/favicon.ico -app-id=hitminer.com -app-version=1.2.2 -output=hitminer
+	fyne-cross darwin  -arch=arm64 -icon=./resoure/static/image/favicon.ico -app-id=hitminer.com -app-version=1.2.2 -output=hitminer
+	fyne-cross darwin  -arch=amd64 -icon=./resoure/static/image/favicon.ico -app-id=hitminer.com -app-version=1.2.2 -output=hitminer
 
 build:
 	go install fyne.io/fyne/v2/cmd/fyne@latest

@@ -25,7 +25,7 @@ func DirectoryContainer(prefix string, w fyne.Window) fyne.CanvasObject {
 		cancel()
 	})
 	svr := s3gateway.NewS3Server(ctx, vars.Host, vars.Token, nil)
-	selectEntry := widget.NewSelect([]string{"上传文件", "上传文件夹", "上传ERO文件"}, func(selected string) {
+	selectEntry := widget.NewSelect([]string{"上传文件", "上传文件夹", "上传ERO文件", "重传文件夹"}, func(selected string) {
 		if selected == "上传文件" {
 			dialog.NewFileOpen(func(reader fyne.URIReadCloser, err error) {
 				if err != nil {
@@ -37,7 +37,7 @@ func DirectoryContainer(prefix string, w fyne.Window) fyne.CanvasObject {
 				}
 				path := reader.URI().Path()
 				_ = reader.Close()
-				UploadWindows(path, prefix, false)
+				UploadWindows(path, prefix, false, false)
 			}, w).Show()
 		} else if selected == "上传文件夹" {
 			dialog.NewFolderOpen(func(dir fyne.ListableURI, err error) {
@@ -48,7 +48,7 @@ func DirectoryContainer(prefix string, w fyne.Window) fyne.CanvasObject {
 				if dir == nil {
 					return
 				}
-				UploadWindows(dir.Path(), prefix, false)
+				UploadWindows(dir.Path(), prefix, false, false)
 			}, w).Show()
 		} else if selected == "上传ERO文件" {
 			dialog.NewFolderOpen(func(dir fyne.ListableURI, err error) {
@@ -59,7 +59,18 @@ func DirectoryContainer(prefix string, w fyne.Window) fyne.CanvasObject {
 				if dir == nil {
 					return
 				}
-				UploadWindows(dir.Path(), prefix, true)
+				UploadWindows(dir.Path(), prefix, true, false)
+			}, w).Show()
+		} else if selected == "重传文件夹" {
+			dialog.NewFolderOpen(func(dir fyne.ListableURI, err error) {
+				if err != nil {
+					dialog.ShowError(err, w)
+					return
+				}
+				if dir == nil {
+					return
+				}
+				UploadWindows(dir.Path(), prefix, false, true)
 			}, w).Show()
 		}
 	})
@@ -77,7 +88,7 @@ func DirectoryContainer(prefix string, w fyne.Window) fyne.CanvasObject {
 			}
 			path := reader.URI().Path()
 			_ = reader.Close()
-			UploadWindows(path, prefix, false)
+			UploadWindows(path, prefix, false, false)
 		}, w).Show()
 	})
 	uploadFolderButton := widget.NewToolbarAction(theme.MoveUpIcon(), func() {
@@ -89,7 +100,7 @@ func DirectoryContainer(prefix string, w fyne.Window) fyne.CanvasObject {
 			if dir == nil {
 				return
 			}
-			UploadWindows(dir.Path(), prefix, false)
+			UploadWindows(dir.Path(), prefix, false, false)
 		}, w).Show()
 	})
 	createFolderButton := widget.NewToolbarAction(theme.FolderNewIcon(), func() {
